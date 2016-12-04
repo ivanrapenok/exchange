@@ -1,0 +1,17 @@
+login as SYS somepassword SYSDBA
+SQL> drop user ewa;
+SQL> create tablespace ewa_tabspace
+  2  datafile 'ewa_tabspace.dat'
+  3  size 10M autoextend on;
+SQL> create temporary tablespace ewa_tabspace_temp
+  2  tempfile 'ewa_tabspace_temp.dat'
+  3  size 5M autoextend on;
+SQL> alter session set "_ORACLE_SCRIPT"=true;
+SQL> create user ewa
+  2  identified by ****
+  3  default tablespace ewa_tabspace
+  4  temporary tablespace ewa_tabspace_temp;
+SQL> grant create session to ewa;
+SQL> grant create table to ewa;
+SQL> grant unlimited tablespace to ewa;
+login as EWA password NORMAL
