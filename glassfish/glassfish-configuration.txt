@@ -1,0 +1,16 @@
+C:\Program Files\glassfish4\glassfish\domains\domain1\lib\ext\ojdbc6.jar
+
+domain.xml
+<resources>
+	<jdbc-connection-pool datasource-classname="oracle.jdbc.pool.OracleDataSource" name="oracle_pool" res-type="javax.sql.DataSource">
+      	<property name="connectionAttributes" value=";create=true"></property>
+	    <property name="user" value="ewa"></property>
+      	<property name="password" value="*****"></property>
+      	<property name="portNumber" value="1521"></property>
+      	<property name="databaseName" value="orcl"></property>
+		<property name="serverName" value="localhost"></property>
+      	<property name="driverType" value="thin"></property>
+    </jdbc-connection-pool>
+	
+	<jdbc-resource pool-name="oracle_pool" jndi-name="jdbc/oracle_pool"></jdbc-resource>
+</resources>
