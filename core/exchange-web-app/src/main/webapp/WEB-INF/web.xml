@@ -4,14 +4,16 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+
     <servlet>
         <servlet-name>test</servlet-name>
         <jsp-file>/WEB-INF/private/test.jsp</jsp-file>
     </servlet>
 
+
     <servlet-mapping>
         <servlet-name>test</servlet-name>
-        <url-pattern>/test</url-pattern>
+        <url-pattern>/stest</url-pattern>
     </servlet-mapping>
 
     <security-constraint>
@@ -19,7 +21,9 @@
         <web-resource-collection>
             <web-resource-name>private articles</web-resource-name>
             <description/>
-            <url-pattern>/private/*</url-pattern>
+            <url-pattern>/test</url-pattern>
+            <url-pattern>/exchange</url-pattern>
+            <url-pattern>/trade</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
         </web-resource-collection>
@@ -32,8 +36,8 @@
         <auth-method>FORM</auth-method>
         <realm-name>JDBCRealmEWA</realm-name>
         <form-login-config>
-            <form-login-page>/WEB-INF/private/login.jsp</form-login-page>
-            <form-error-page>/WEB-INF/private/error.jsp</form-error-page>
+            <form-login-page>/WEB-INF/common/authorization.jsp?authmessage=Authorization</form-login-page>
+            <form-error-page>/WEB-INF/common/authorization.jsp?authmessage=Something wrong</form-error-page>
         </form-login-config>
     </login-config>
     <security-role>
