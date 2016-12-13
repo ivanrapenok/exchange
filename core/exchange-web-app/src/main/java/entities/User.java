@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USERS_TABLE")
 @NamedQueries({
-        @NamedQuery(name = "User.getById", query = "SELECT a FROM User a WHERE a.userId = :id")
+        @NamedQuery(name = "User.getById", query = "SELECT user FROM User user WHERE user.userId = :id")
 })
 public class User {
 
@@ -21,6 +21,17 @@ public class User {
 
     @Column(name = "MONEY")
     private Double money;
+
+    public User() {
+
+    }
+
+    public User(String userId, String userPswd, String groupId) {
+        this.userId = userId;
+        this.userPswd = userPswd;
+        this.groupId = groupId;
+        this.money = 0D;
+    }
 
     public String getUserId() {
         return userId;

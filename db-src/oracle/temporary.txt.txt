@@ -1,0 +1,65 @@
+create table users_table 
+(
+       user_id varchar2(100),
+       user_pswd varchar2(100),
+       group_id varchar2(100),
+       money number(20,4),
+       primary key (user_id)
+);
+
+create table shares_table
+(
+       share_id varchar2(100),
+       share_type varchar2(100),
+       price number(20,4),
+       primary key (share_id)
+);
+
+create table shares_table
+(
+       share_id varchar2(100),
+       share_type varchar2(100),
+       price number(20,4),
+       primary key (share_id)
+);
+
+create table trades 
+(
+       trade_id number(10) generated as identity START WITH 10000 INCREMENT BY 9999999999,
+       trade_type number(2) check (trade_type in (0, 1)),
+       share_share_id varchar2(100) not null,
+       share_count number(10) not null,
+       user_initiator_id varchar2(100) not null,
+       user_client_id varchar2(100),
+       price number(20,4) not null, 
+       primary key (trade_id),
+       constraint sharefk foreign key (share_share_id) references shares_table(share_id),
+       constraint initiatorfk foreign key (user_initiator_id) references users_table(user_id),
+       constraint clientfk foreign key (user_client_id) references users_table(user_id)
+);
+
+create table ownerships
+(
+       user_owner_id varchar2(100),
+       share_own_id varchar2(100),
+       share_count number(10),
+       primary key (user_owner_id, share_own_id),
+       constraint ownsharefk foreign key (share_own_id) references shares_table(share_id),
+       constraint ownerfk foreign key (user_owner_id) references users_table(user_id)
+)
+
+insert all 
+into shares_table values ('abby', 'w.n.share', 10)
+into shares_table values ('lori', 'w.n.share', 15)
+into shares_table values ('evie', 'w.n.share', 20)
+into shares_table values ('rori', 'w.n.share', 25)
+into shares_table values ('gina', 'w.n.share', 30)
+select 1 from dual
+
+insert all
+into users_table values ('atlantic', 'atlantic', 'user', 16020000)
+into users_table values ('arctic', 'arctic', 'user', 5427000)
+into users_table values ('indian', 'indian', 'user', 27240000)
+into users_table values ('pacific', 'pacific', 'user', 58000000)
+into users_table values ('southern', 'southern', 'user', 5200000)
+select 1 from dual
