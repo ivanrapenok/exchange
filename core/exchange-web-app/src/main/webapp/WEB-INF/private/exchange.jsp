@@ -13,23 +13,5 @@
 <body>
     <h1>EXCHANGE</h1>
     <a href="logout">log out</a>
-    <section>
-        <c:forEach var="trade" items="${trades}">
-            <article>
-                <h4>${trade.share}</h4>
-                <div>
-                    ${fn:substring(article.text,0,300)} ...
-                </div>
-                <div class="fotter-article">
-                        <span class="read"><a href="article?id=${article.id}">
-                                     Читать...</a></span>
-                    <span class="date-article">Дата статьи: ${article.date}</span>
-                </div>
-            </article>
-        </c:forEach>
-    </section>
-    <form action="PrivateController" method="POST">
-
-    </form>
 </body>
 </html>

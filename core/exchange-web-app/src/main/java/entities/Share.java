@@ -18,7 +18,7 @@ public class Share {
     private String shareType;
 
     @Digits(integer = 20, fraction = 4)
-    @Column(name = "PRICE")
+    @Column(name = "PRICE", nullable = false)
     private Double price;
 
     public Share() {
@@ -53,6 +53,27 @@ public class Share {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Share share = (Share) o;
+
+        if (!shareId.equals(share.shareId)) return false;
+        if (shareType != null ? !shareType.equals(share.shareType) : share.shareType != null) return false;
+        return price.equals(share.price);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = shareId.hashCode();
+        result = 31 * result + (shareType != null ? shareType.hashCode() : 0);
+        result = 31 * result + price.hashCode();
+        return result;
     }
 
     @Override

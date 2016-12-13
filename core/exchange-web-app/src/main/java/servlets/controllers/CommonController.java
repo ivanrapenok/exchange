@@ -1,6 +1,6 @@
 package servlets.controllers;
 
-import beans.UserManager;
+import beans.UsersManager;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 public class CommonController extends HttpServlet {
 
     @EJB
-    UserManager userManager;
+    UsersManager userManager;
 
     public CommonController() {
         super();

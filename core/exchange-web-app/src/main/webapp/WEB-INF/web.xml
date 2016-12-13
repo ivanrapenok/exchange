@@ -4,17 +4,14 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-
-    <servlet>
-        <servlet-name>test</servlet-name>
-        <jsp-file>/WEB-INF/private/test.jsp</jsp-file>
-    </servlet>
-
-
-    <servlet-mapping>
-        <servlet-name>test</servlet-name>
-        <url-pattern>/stest</url-pattern>
-    </servlet-mapping>
+    <jsp-config>
+        <jsp-property-group>
+            <description>Header and footer settings</description>
+            <url-pattern>/WEB-INF/private/trade.jsp</url-pattern>
+            <include-prelude>/WEB-INF/jspf/header.jspf</include-prelude>
+            <include-coda>/WEB-INF/jspf/footer.jspf</include-coda>
+        </jsp-property-group>
+    </jsp-config>
 
     <security-constraint>
         <display-name>private_zone</display-name>

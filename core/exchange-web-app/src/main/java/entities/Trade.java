@@ -110,6 +110,35 @@ public class Trade {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Trade trade = (Trade) o;
+
+        if (!tradeId.equals(trade.tradeId)) return false;
+        if (!tradeType.equals(trade.tradeType)) return false;
+        if (!shareShareId.equals(trade.shareShareId)) return false;
+        if (!userInitiatorId.equals(trade.userInitiatorId)) return false;
+        if (userClientId != null ? !userClientId.equals(trade.userClientId) : trade.userClientId != null) return false;
+        if (!shareCount.equals(trade.shareCount)) return false;
+        return price.equals(trade.price);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = tradeId.hashCode();
+        result = 31 * result + tradeType.hashCode();
+        result = 31 * result + shareShareId.hashCode();
+        result = 31 * result + userInitiatorId.hashCode();
+        result = 31 * result + (userClientId != null ? userClientId.hashCode() : 0);
+        result = 31 * result + shareCount.hashCode();
+        result = 31 * result + price.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Trade{" +
                 "tradeId=" + tradeId +

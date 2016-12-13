@@ -6,15 +6,16 @@ import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.List;
 
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
-public class UserManager {
+public class UsersManager {
 
     @PersistenceContext(unitName = "em")
     private EntityManager em;
 
-    public UserManager() {
+    public UsersManager() {
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -35,11 +36,15 @@ public class UserManager {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public User getUser(String id) {
         try {
             Query query = em.createNamedQuery("User.getById").setParameter("id", id);
-            query.getSingleResult();
-            return (User) query.getSingleResult();
+            List<User> list=query.getResultList();
+            if (list == null || list.size() == 0) {
+                return null;
+            }
+            return list.get(0);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

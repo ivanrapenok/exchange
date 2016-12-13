@@ -5,16 +5,23 @@ import javax.persistence.*;
 @Entity
 @Table(name = "OWNERSHIPS")
 @NamedQueries({
-        @NamedQuery(name = "Ownership.getByUser", query = "")
+        @NamedQuery(name = "Ownership.getByUserId",
+                query = "SELECT ownership FROM Ownership ownership WHERE ownership.userOwner.userId = :id")
 })
 public class Ownership {
-    @JoinColumn(name = "USER_OWNER_ID", referencedColumnName = "USER_ID")
-    @ManyToOne(optional = false)
-    private User userOwnerId;
 
+    @EmbeddedId
+    private OwnershipId ownershipId = new OwnershipId();
+
+    @MapsId
     @JoinColumn(name = "SHARE_OWN_ID", referencedColumnName = "SHARE_ID")
     @ManyToOne(optional = false)
-    private Share shareOwnId;
+    private Share shareOwn;
+
+    @MapsId
+    @JoinColumn(name = "USER_OWNER_ID", referencedColumnName = "USER_ID")
+    @ManyToOne(optional = false)
+    private User userOwner;
 
     @Basic(optional = false)
     @Column(name = "SHARE_COUNT")
@@ -23,26 +30,26 @@ public class Ownership {
     public Ownership() {
     }
 
-    public Ownership(User userOwnerId, Share shareOwnId, Long shareCount) {
-        this.userOwnerId = userOwnerId;
-        this.shareOwnId = shareOwnId;
+    public Ownership(Share shareOwn, User userOwner, Long shareCount) {
+        this.shareOwn = shareOwn;
+        this.userOwner = userOwner;
         this.shareCount = shareCount;
     }
 
-    public User getUserOwnerId() {
-        return userOwnerId;
+    public Share getShareOwn() {
+        return shareOwn;
     }
 
-    public void setUserOwnerId(User userOwnerId) {
-        this.userOwnerId = userOwnerId;
+    public void setShareOwn(Share shareOwn) {
+        this.shareOwn = shareOwn;
     }
 
-    public Share getShareOwnId() {
-        return shareOwnId;
+    public User getUserOwner() {
+        return userOwner;
     }
 
-    public void setShareOwnId(Share shareOwnId) {
-        this.shareOwnId = shareOwnId;
+    public void setUserOwner(User userOwner) {
+        this.userOwner = userOwner;
     }
 
     public Long getShareCount() {
@@ -56,8 +63,8 @@ public class Ownership {
     @Override
     public String toString() {
         return "Ownership{" +
-                "userOwnerId=" + userOwnerId +
-                ", shareOwnId=" + shareOwnId +
+                "shareOwn=" + shareOwn +
+                ", userOwner=" + userOwner +
                 ", shareCount=" + shareCount +
                 '}';
     }
