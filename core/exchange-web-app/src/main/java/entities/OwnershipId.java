@@ -4,9 +4,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
-public class OwnershipId implements Serializable {
+class OwnershipId implements Serializable {
 
+    @Column
     private String userOwner;
+    @Column
     private String shareOwn;
 
     public OwnershipId() {

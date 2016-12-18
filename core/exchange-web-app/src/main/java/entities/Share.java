@@ -4,9 +4,11 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 
 @Entity
+@Cacheable(false)
 @Table(name = "SHARES_TABLE")
 @NamedQueries({
-        @NamedQuery(name = "Share.getById", query = "SELECT share FROM Share share WHERE share.shareId = :id")
+        @NamedQuery(name = "Share.getById", query = "SELECT share FROM Share share WHERE share.shareId = :id"),
+        @NamedQuery(name = "Share.getAll", query = "SELECT share FROM Share share")
 })
 public class Share {
 
@@ -23,6 +25,10 @@ public class Share {
 
     public Share() {
 
+    }
+
+    public Share(String shareId) {
+        this.shareId = shareId;
     }
 
     public Share(String shareId, String shareType, Double price) {
@@ -70,10 +76,7 @@ public class Share {
 
     @Override
     public int hashCode() {
-        int result = shareId.hashCode();
-        result = 31 * result + (shareType != null ? shareType.hashCode() : 0);
-        result = 31 * result + price.hashCode();
-        return result;
+        return shareId.hashCode();
     }
 
     @Override

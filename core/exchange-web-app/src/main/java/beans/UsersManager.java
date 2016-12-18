@@ -6,6 +6,7 @@ import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 @Stateless
@@ -50,4 +51,16 @@ public class UsersManager {
             return null;
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public void changeMoney(String userId, Double price) {
+        List<User> list = em.createNamedQuery("User.getById").setParameter("id", userId).getResultList();
+        if (list == null || list.size() == 0) {
+            throw new RuntimeException();
+        } else {
+            Double currentMoney = list.get(0).getMoney();
+            list.get(0).setMoney(currentMoney + price);
+        }
+    }
+
 }

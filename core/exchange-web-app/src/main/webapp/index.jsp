@@ -3,10 +3,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=windows1251">
-        <title>AddressBook Web Application</title>
+        <title>Stock exchange</title>
     </head>
     <body>
-        <h1>Wellcome to stock exchange</h1>
-        <p><a href="/ewa-app/welcome-page">servlet welcome page :3</a></p>
+    <div align="center">
+        <br>
+        <br>
+        <h1>Wellcome to stock exchange!</h1>
+        <p><a href="/ewa-app/exchange">Log in</a></p>
+    </div>
     </body>
 </html>

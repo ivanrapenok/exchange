@@ -3,24 +3,31 @@ package entities;
 import javax.persistence.*;
 
 @Entity
+@Cacheable(false)
 @Table(name = "OWNERSHIPS")
 @NamedQueries({
         @NamedQuery(name = "Ownership.getByUserId",
-                query = "SELECT ownership FROM Ownership ownership WHERE ownership.userOwner.userId = :id")
+                query = "SELECT ownership FROM Ownership ownership " +
+                        "WHERE ownership.userOwner.userId = :id AND " +
+                        "ownership.shareCount <> 0"),
+        @NamedQuery(name = "Ownership.getByUserIdShareId",
+                query = "SELECT ownership FROM Ownership ownership " +
+                        "WHERE ownership.userOwner.userId = :userId AND " +
+                        "ownership.shareOwn.shareId = :shareId")
 })
 public class Ownership {
 
     @EmbeddedId
-    private OwnershipId ownershipId = new OwnershipId();
+    private final OwnershipId ownershipId = new OwnershipId();
 
     @MapsId
     @JoinColumn(name = "SHARE_OWN_ID", referencedColumnName = "SHARE_ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Share shareOwn;
 
     @MapsId
     @JoinColumn(name = "USER_OWNER_ID", referencedColumnName = "USER_ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private User userOwner;
 
     @Basic(optional = false)
@@ -58,6 +65,22 @@ public class Ownership {
 
     public void setShareCount(Long shareCount) {
         this.shareCount = shareCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Ownership ownership = (Ownership) o;
+
+        return ownershipId.equals(ownership.ownershipId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return ownershipId.hashCode();
     }
 
     @Override

@@ -31,8 +31,8 @@
     <form action="trade" method="POST">
         <p>
             Share: <select name="newTradeShareId">
-                <c:forEach var="ownership" items="${ownerships}">
-                    <option value="${ownership.shareOwn}">${ownership.shareOwn.shareId}</option>
+                <c:forEach var="share" items="${shares}">
+                    <option value="${share.shareId}">${share.shareId}</option>
                 </c:forEach>
             </select>
             Type: <select name="newTradeType">
@@ -41,7 +41,7 @@
             </select>
         </p>
         <p><input placeholder="count" type="number" size="20" name="newTradeShareCount"></p>
-        <p><input placeholder="total price" type="number" size="20" name="newTradeSharePrice"></p>
+        <p><input placeholder="total price" type="number" size="20" name="newTradeSharesPrice"></p>
         <p><input type="submit" name="create-trade" value="Create trade"></p>
     </form>
 </div>

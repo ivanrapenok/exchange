@@ -1,6 +1,8 @@
 package beans;
 
 import entities.Ownership;
+import entities.Share;
+import entities.User;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
@@ -32,6 +34,20 @@ public class OwnershipsManager {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void changeSharesCount(String userId, String shareId, Long tradesCount) {
+        List<Ownership> list = em.createNamedQuery("Ownership.getByUserIdShareId").
+                setParameter("userId", userId).
+                setParameter("shareId", shareId).
+                getResultList();
+        if (list == null || list.size() == 0) {
+            em.merge(new Ownership(new Share(shareId), new User(userId), tradesCount));
+        } else {
+            Long currentShareCount = list.get(0).getShareCount();
+            list.get(0).setShareCount(currentShareCount + tradesCount);
         }
     }
 }

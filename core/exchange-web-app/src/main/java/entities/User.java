@@ -3,6 +3,7 @@ package entities;
 import javax.persistence.*;
 
 @Entity
+@Cacheable(false)
 @Table(name = "USERS_TABLE")
 @NamedQueries({
         @NamedQuery(name = "User.getById", query = "SELECT user FROM User user WHERE user.userId = :id")
@@ -24,6 +25,10 @@ public class User {
 
     public User() {
 
+    }
+
+    public User(String userId) {
+        this.userId = userId;
     }
 
     public User(String userId, String userPswd, String groupId) {
@@ -81,11 +86,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = userId.hashCode();
-        result = 31 * result + (userPswd != null ? userPswd.hashCode() : 0);
-        result = 31 * result + (groupId != null ? groupId.hashCode() : 0);
-        result = 31 * result + money.hashCode();
-        return result;
+        return userId.hashCode();
     }
 
     @Override

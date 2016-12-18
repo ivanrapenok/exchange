@@ -1,17 +1,23 @@
 package beans;
 
-import entities.User;
+import entities.Trade;
 
-import javax.ejb.Stateful;
-import javax.ejb.Stateless;
+import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 @Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class ExchangeSessionBean {
 
-    private long count = 0;
+    @EJB
+    TradesManager tradesManager;
+
+    @EJB
+    OwnershipsManager ownershipsManager;
+
+    @EJB
+    UsersManager usersManager;
 
     @PersistenceContext(unitName = "em")
     private EntityManager em;
@@ -19,23 +25,42 @@ public class ExchangeSessionBean {
     public ExchangeSessionBean() {
     }
 
-    public long getCount() {
-        return count;
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void createTrade(String userId, Integer type, String shareId, Long shareCount, Double price) {
+        tradesManager.createTrade(userId, type, shareId, shareCount, price);
+        if (type == 0) {
+            ownershipsManager.changeSharesCount(userId, shareId, -shareCount);
+        } else if (type == 1) {
+            usersManager.changeMoney(userId, -price);
+        } else {
+            throw new RuntimeException();
+        }
     }
 
-    public User getUser(String id) {
-        count++;
-        if (id.equals("johny")) {
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void acceptTrade(Long tradeId, String userId) {
+        Trade trade = tradesManager.getTrade(tradeId);
+        String initiatorId = trade.getUserInitiatorId().getUserId();
+        String shareId = trade.getShareShareId().getShareId();
+        Double price = trade.getPrice();
+        Long count = trade.getShareCount();
+
+        long multiple;
+        boolean cancel = initiatorId.equals(userId);
+        boolean sale = trade.getTradeType() == 0;
+
+        if (trade.getUserClientId() == null) {
+            trade.setUserClientId(usersManager.getUser(userId));
+            if (cancel == sale) {
+                ownershipsManager.changeSharesCount(initiatorId, shareId, count);
+            } else {
+                usersManager.changeMoney(initiatorId, price);
+            }
+            if (!cancel) {
+                multiple = (sale) ? -1 : 1;
+                usersManager.changeMoney(userId, multiple * price);
+                ownershipsManager.changeSharesCount(userId, shareId, -multiple * count);
             }
         }
-        Query query = em.createNamedQuery("User.getById").setParameter("id", id);
-        query.getSingleResult();
-        System.out.println(count + " AAAAAAAAAAAAAAAAAAAAAAAAAA");
-        return (User) query.getSingleResult();
     }
-
 }

@@ -2,35 +2,38 @@ package entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@Cacheable(false)
 @Table(name = "TRADES")
 @NamedQueries({
         @NamedQuery(name = "Trade.getById", query = "SELECT trade FROM Trade trade WHERE trade.tradeId = :id"),
-        @NamedQuery(name = "Trade.getAll", query = "SELECT trade FROM Trade trade")
+        @NamedQuery(name = "Trade.getAll", query = "SELECT trade FROM Trade trade WHERE trade.userClientId is null")
 })
 public class Trade {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "seq", sequenceName = "TRADES_SEQ", allocationSize = 1)
     @Column(name = "TRADE_ID")
     private Long tradeId;
 
-    @Size(max = 1)
-    @Basic(optional = false)
+    @NotNull
     @Column(name = "TRADE_TYPE")
     private Integer tradeType;
 
     @JoinColumn(name = "SHARE_SHARE_ID", referencedColumnName = "SHARE_ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private Share shareShareId;
 
     @JoinColumn(name = "USER_INITIATOR_ID", referencedColumnName = "USER_ID")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private User userInitiatorId;
 
     @JoinColumn(name = "USER_CLIENT_ID", referencedColumnName = "USER_ID")
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private User userClientId;
 
     @Basic(optional = false)
