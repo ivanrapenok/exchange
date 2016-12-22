@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Cacheable(false)
@@ -15,7 +16,7 @@ import javax.persistence.*;
                         "WHERE ownership.userOwner.userId = :userId AND " +
                         "ownership.shareOwn.shareId = :shareId")
 })
-public class Ownership {
+public class Ownership implements Serializable {
 
     @EmbeddedId
     private final OwnershipId ownershipId = new OwnershipId();

@@ -2,6 +2,7 @@ package entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
+import java.io.Serializable;
 
 @Entity
 @Cacheable(false)
@@ -10,7 +11,7 @@ import javax.validation.constraints.Digits;
         @NamedQuery(name = "Share.getById", query = "SELECT share FROM Share share WHERE share.shareId = :id"),
         @NamedQuery(name = "Share.getAll", query = "SELECT share FROM Share share")
 })
-public class Share {
+public class Share implements Serializable{
 
     @Id
     @Column(name = "SHARE_ID", nullable = false)

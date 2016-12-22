@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Cacheable(false)
@@ -8,7 +9,7 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name = "User.getById", query = "SELECT user FROM User user WHERE user.userId = :id")
 })
-public class User {
+public class User implements Serializable{
 
     @Id
     @Column(name = "USER_ID", nullable = false)

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
 @Cacheable(false)
@@ -12,7 +13,7 @@ import javax.validation.constraints.Size;
         @NamedQuery(name = "Trade.getById", query = "SELECT trade FROM Trade trade WHERE trade.tradeId = :id"),
         @NamedQuery(name = "Trade.getAll", query = "SELECT trade FROM Trade trade WHERE trade.userClientId is null")
 })
-public class Trade {
+public class Trade implements Serializable{
 
     @Id
     @GeneratedValue(generator = "seq", strategy = GenerationType.SEQUENCE)

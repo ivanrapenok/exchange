@@ -1,6 +1,6 @@
 package servlets.controllers;
 
-import beans.*;
+import beans.Exchange;
 import entities.Trade;
 import entities.User;
 
@@ -16,23 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "PrivateController", urlPatterns = {"/trade", "/exchange", "/logout" })
-//@ServletSecurity( @HttpConstraint(rolesAllowed = {"private"}) )
 public class PrivateController extends HttpServlet {
 
     @EJB
-    OwnershipsManager ownershipsManager;
-
-    @EJB
-    UsersManager usersManager;
-
-    @EJB
-    ShareManager shareManager;
-
-    @EJB
-    ExchangeSessionBean exchange;
-
-    @EJB
-    TradesManager tradesManager;
+    Exchange exchange;
 
     public PrivateController() {
         super();
@@ -75,8 +62,8 @@ public class PrivateController extends HttpServlet {
         User user;
         switch (request.getServletPath()) {
             case "/exchange":
-                user = usersManager.getUser(request.getUserPrincipal().getName());
-                List<Trade> trades = tradesManager.getAllTrades();
+                user = exchange.getUser(request.getUserPrincipal().getName());
+                List<Trade> trades = exchange.getAllTrades();
                 if (trades == null) trades = new ArrayList<>();
                 List<Trade> myTrades = new ArrayList<>();
                 List<Trade> purchaseTrades = new ArrayList<>();
@@ -97,10 +84,10 @@ public class PrivateController extends HttpServlet {
                 request.getRequestDispatcher("WEB-INF/private/exchange.jsp").forward(request, response);
                 break;
             case "/trade":
-                user = usersManager.getUser(request.getUserPrincipal().getName());
+                user = exchange.getUser(request.getUserPrincipal().getName());
                 request.setAttribute("user", user);
-                request.setAttribute("shares", shareManager.getSharesList());
-                request.setAttribute("ownerships", ownershipsManager.getUsersOwnerships(user.getUserId()));
+                request.setAttribute("shares", exchange.getSharesList());
+                request.setAttribute("ownerships", exchange.getUsersOwnerships(user.getUserId()));
                 request.getRequestDispatcher("WEB-INF/private/trade.jsp").forward(request, response);
                 break;
             case "/logout":

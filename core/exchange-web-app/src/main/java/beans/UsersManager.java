@@ -2,65 +2,14 @@ package beans;
 
 import entities.User;
 
-import javax.ejb.*;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.DoubleSummaryStatistics;
-import java.util.List;
+import javax.ejb.Local;
 
-@Stateless
-@TransactionManagement(TransactionManagementType.CONTAINER)
-public class UsersManager {
+@Local
+public interface UsersManager {
 
-    @PersistenceContext(unitName = "em")
-    private EntityManager em;
+    Integer addUser(String userId, String userPswd, String repeatedPswd, String groupId);
 
-    public UsersManager() {
-    }
+    User getUser(String id);
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Integer addUser(String userId, String userPswd, String repeatedPswd, String groupId) {
-        try {
-            if (userId != null && userPswd != null && repeatedPswd != null && userPswd.equals(repeatedPswd)) {
-                if (getUser(userId) == null) {
-                    User newUser = new User(userId, userPswd, (groupId != null) ? groupId : "user");
-                    em.persist(newUser);
-                    return 0;
-                }
-                return 1;
-            }
-            return 2;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 3;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public User getUser(String id) {
-        try {
-            Query query = em.createNamedQuery("User.getById").setParameter("id", id);
-            List<User> list=query.getResultList();
-            if (list == null || list.size() == 0) {
-                return null;
-            }
-            return list.get(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void changeMoney(String userId, Double price) {
-        List<User> list = em.createNamedQuery("User.getById").setParameter("id", userId).getResultList();
-        if (list == null || list.size() == 0) {
-            throw new RuntimeException();
-        } else {
-            Double currentMoney = list.get(0).getMoney();
-            list.get(0).setMoney(currentMoney + price);
-        }
-    }
-
+    void changeMoney(String userId, Double price);
 }

@@ -1,8 +1,9 @@
 package servlets.controllers;
 
-import beans.UsersManager;
+import beans.Exchange;
 
 import javax.ejb.EJB;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,13 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "CommonController", urlPatterns = {"/registration"})
+@WebServlet(name = "CommonController", urlPatterns = {"/registration" })
 public class CommonController extends HttpServlet {
 
     @EJB
-    UsersManager userManager;
+    Exchange exchange;
 
-    public CommonController() {
+    public CommonController() throws NamingException {
         super();
     }
 
@@ -38,7 +39,7 @@ public class CommonController extends HttpServlet {
                 String userPswd = request.getParameter("password");
                 String repeatedPswd = request.getParameter("repeated");
 
-                Integer answer = userManager.addUser(userId, userPswd, repeatedPswd, null);
+                Integer answer = exchange.addUser(userId, userPswd, repeatedPswd, null);
 
                 if (answer == 0) {
                     regMessage = "User successfully added";
