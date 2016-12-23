@@ -7,8 +7,6 @@ import entities.Trade;
 import entities.User;
 
 import javax.ejb.*;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
